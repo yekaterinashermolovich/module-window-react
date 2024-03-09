@@ -1,9 +1,12 @@
 
 import './App.css';
+import Popup from './components/index.js';
+
 
 function App() {
   return (
     <div className="App">
+      <Popup />
       <header className="App-header">
         <p>
           Edit <code>src/App.js</code> and save to reload.
