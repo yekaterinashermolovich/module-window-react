@@ -1,26 +1,60 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import "./index.css";
 
+export const PopUp = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [wasOpened, setWasOpened] = useState(false);
 
-function Popup() {
+  const openModal = () => {
+    setIsOpen(true);
+    setWasOpened(true);
+  };
 
-    const [isOpen, setisOpen] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
-    return (
-        <>
-        <button onClick={() => setisOpen(true)}>Open pop-up</button>
-        {isOpen && (<div className="popup">
-            <div className="popupContent">
-                <h2>Title</h2>
-                <p>text</p>
-                <button onClick={() => setisOpen(false)}>Open pop-up</button>
+  useEffect(() => {
+    if (wasOpened) {
+      console.log("Modal is open");
+    }
+  }, [wasOpened]);
+
+  useEffect(() => {
+    if (!isOpen && wasOpened) {
+      console.log("Modal is closed");
+      setWasOpened(false); //   false после закрытия модального окна
+    }
+  }, [isOpen, wasOpened]);
+
+  return (
+    <div>
+      <button onClick={openModal} className="modal-open">
+        Открыть модальное окно?
+      </button>
+      {isOpen &&
+        createPortal(
+          <div className="modal-overlay">
+            <div className="modal">
+              <button className="modal-close-btn" onClick={closeModal}>
+                &times;
+              </button>
+              <div className="modal-content">
+                <h2>Modal window</h2>
+                <p>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Ipsam eligendi natus corporis expedita voluptate, sapiente
+                  fugit quasi quaerat nisi modi labore amet sit perspiciatis
+                  beatae, cum pariatur perferendis suscipit eum.
+                </p>
+              </div>
             </div>
-        </div>
+          </div>,
+          document.getElementById("modals")
         )}
-        </>
-    );
+    </div>
+  );
+};
 
-}
-
-export default Popup;
-
+// https://react.dev/reference/react-dom/createPortal#usage

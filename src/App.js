@@ -1,13 +1,13 @@
 
 import './App.css';
-import Popup from './components/index.js';
+import { PopUp } from './components/index.js';
 
 
 function App() {
   return (
     <div className="App">
-      <Popup />
       <header className="App-header">
+      <PopUp />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
