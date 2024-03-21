@@ -1,60 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import "./index.css";
 
-export const PopUp = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [wasOpened, setWasOpened] = useState(false);
+export const Timer = () => {
 
-  const openModal = () => {
-    setIsOpen(true);
-    setWasOpened(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    if (wasOpened) {
-      console.log("Modal is open");
+    let intervalId;
+    if(isActive) {
+      intervalId = setInterval(() => {setSeconds(prevSeconds => prevSeconds + 0.01);}, 10);
+      
     }
-  }, [wasOpened]);
-
-  useEffect(() => {
-    if (!isOpen && wasOpened) {
-      console.log("Modal is closed");
-      setWasOpened(false); //   false после закрытия модального окна
-    }
-  }, [isOpen, wasOpened]);
+    return () => clearInterval(intervalId);{[isActive]}  
+  })
 
   return (
-    <div>
-      <button onClick={openModal} className="modal-open">
-        Открыть модальное окно?
-      </button>
-      {isOpen &&
-        createPortal(
-          <div className="modal-overlay">
-            <div className="modal">
-              <button className="modal-close-btn" onClick={closeModal}>
-                &times;
-              </button>
-              <div className="modal-content">
-                <h2>Modal window</h2>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Ipsam eligendi natus corporis expedita voluptate, sapiente
-                  fugit quasi quaerat nisi modi labore amet sit perspiciatis
-                  beatae, cum pariatur perferendis suscipit eum.
-                </p>
-              </div>
-            </div>
-          </div>,
-          document.getElementById("modals")
-        )}
-    </div>
-  );
+    <>
+    <h1>Timer</h1>
+    <p>Time: {formatTime(seconds)}s</p>
+    <button onClick={handleStart}>Start</button>
+    <button onClick={handlePauseContinue}>{isActive ? 'Pause' : 'Continue'}</button>
+    <button onClick={handleStop}>Stop</button>
+    </>
+  )
+ 
 };
 
-// https://react.dev/reference/react-dom/createPortal#usage
+
