@@ -9,11 +9,33 @@ export const Timer = () => {
   useEffect(() => {
     let intervalId;
     if(isActive) {
-      intervalId = setInterval(() => {setSeconds(prevSeconds => prevSeconds + 0.01);}, 10);
+      intervalId = setInterval(() => {setSeconds((prevSeconds) => prevSeconds + 0.01);}, 10);
       
     }
-    return () => clearInterval(intervalId);{[isActive]}  
-  })
+    return () => clearInterval(intervalId);},
+    
+    [isActive]  
+  );
+
+  const formatTime = (timeInSeconds) => {
+      return timeInSeconds.toFixed(2);
+  }
+
+  const handleStart = () => {
+    return setIsActive(true);
+  }
+
+  const handlePauseContinue = () => {
+    return setIsActive((prev) => !prev);
+  }
+
+  const handleStop = () => {
+    setIsActive(false);
+
+    setSeconds(0);
+  }
+
+
 
   return (
     <>
